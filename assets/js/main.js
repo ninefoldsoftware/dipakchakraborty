@@ -1,14 +1,7 @@
-/* =========================================================
-   Dipak Chakraborty — coaching site
-   All behaviour lives here. No inline scripts in the HTML.
-   ========================================================= */
 (function () {
   "use strict";
 
-  /* -------------------------------------------------------
-     0. Config — your WhatsApp number lives in ONE place.
-     ------------------------------------------------------- */
-  var WHATSAPP_NUMBER = "918420361178"; // [EDIT] country code + number, no + or spaces
+  var WHATSAPP_NUMBER = "918420361178";
   var DEFAULT_MESSAGE = "Hi! I found your website and I'd like to know more about your coaching classes.";
 
   function waLink(message) {
@@ -16,35 +9,16 @@
     return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + text;
   }
 
-  /* -------------------------------------------------------
-     0b. COURSES — this is the list to edit.
-     Add one object per course you teach. Only "icon" and "name" are
-     required to show a card; everything else can start blank and be
-     filled in whenever you're ready — the card will still work, it
-     will just show "Coming soon" in the modal until you fill it in.
-
-     icon        - a path to an image under assets/img/ (e.g. "assets/img/course-excel.svg"),
-                   OR an emoji if you prefer
-     name        - the course title shown on the card and in the modal
-     duration    - e.g. "3 months" / "12 weeks"
-     fee         - e.g. "₹4,999" or "₹4,999 / month"
-     description - a short paragraph about what the course covers
-     formLink    - your Google Form link for this course's enrolment
-     ------------------------------------------------------- */
   var COURSES = [
-    // [EDIT] Replace these with your real courses — duplicate the
-    // block for each additional course.
     {
       icon: "assets/img/course-excel.svg",
       name: "Excel + Power BI",
-      duration: "8 weeks · 2 live online sessions per week",
       description: "Learn Excel and Power BI together — go from spreadsheets and formulas to interactive dashboards and reports. Live online classes, plus practice datasets and weekly assignments. Ideal for analysts, students and professionals who want data skills they can use on projects and at work.",
       formLink: "https://docs.google.com/forms/d/e/1FAIpQLSc-rM3LUY51y9bx7H8z7UJD2ttCij0ZNLzUzCD9Ce1YjmMyDg/viewform"
     },
     {
       icon: "assets/img/course-ml.svg",
       name: "Machine Learning with Python",
-      duration: "10 weeks · 2 live online sessions per week",
       description: "Build practical machine learning skills from scratch in Python — Python for data analysis, then core ML models like regression, classification and clustering, and end with a final project. Live online classes, Jupyter notebooks and weekly coding assignments.",
       formLink: "https://docs.google.com/forms/d/e/1FAIpQLSeSBc2AfJjEIG23x5DhOstSBD_vKupJA90i624Q4LRMCKWN6Q/viewform"
     }
@@ -56,9 +30,6 @@
     return div.innerHTML;
   }
 
-  /* -------------------------------------------------------
-     1. Wire up every generic WhatsApp CTA on the page
-     ------------------------------------------------------- */
   function wireWhatsAppButtons() {
     var generic = [
       document.getElementById("waHeaderBtn"),
@@ -69,18 +40,8 @@
     generic.forEach(function (el) {
       if (el) el.setAttribute("href", waLink());
     });
-
-    // Keep footer phone number display in sync with the config above
-    var footerPhone = document.getElementById("footerPhone");
-    if (footerPhone) {
-      var n = WHATSAPP_NUMBER.replace(/^91/, "");
-      footerPhone.textContent = "+91 " + n.slice(0, 5) + " " + n.slice(5);
-    }
   }
 
-  /* -------------------------------------------------------
-     2. Mobile nav toggle
-     ------------------------------------------------------- */
   function setupNav() {
     var toggle = document.getElementById("navToggle");
     var nav = document.getElementById("mainNav");
@@ -99,10 +60,6 @@
     });
   }
 
-  /* -------------------------------------------------------
-     3. Enquiry form — collects name / phone / course / message
-        and opens WhatsApp with everything pre-filled
-     ------------------------------------------------------- */
   function setupEnquiryForm() {
     var form = document.getElementById("enquiryForm");
     var select = document.getElementById("enquiryCourse");
@@ -164,9 +121,6 @@
     });
   }
 
-  /* -------------------------------------------------------
-     4. Video modal — click a video card to play it inline
-     ------------------------------------------------------- */
   function setupVideoModal() {
     var modal = document.getElementById("videoModal");
     var frame = document.getElementById("videoModalFrame");
@@ -176,34 +130,6 @@
     if (!modal || !frame || !cards.length) return;
 
     function openModal(videoId) {
-      // The pop-up player is built from the video ID automatically.
-      // The card's data-video="<ID>" (in index.html) flows in as `videoId`
-      // and is dropped into the standard YouTube embed URL:
-      //
-      //   https://www.youtube.com/embed/<VIDEO ID>?autoplay=1&rel=0&playsinline=1
-      //
-      // So you never touch this file to add a video — just paste your ID
-      // into data-video on the card in index.html and both the thumbnail and
-      // the player pick it up.
-      //
-      // ⚠ ERROR 153 ("Video player configuration error") — before changing
-      // anything, know this is almost always YouTube-side, NOT your video link:
-      //   1. YouTube now requires the browser to send an HTTP Referer header
-      //      for embeds. That works automatically once the site is ONLINE.
-      //   2. If you preview this page by double-clicking index.html (file://),
-      //      no Referer is sent → every embed shows error 153. Published on
-      //      GitHub Pages (or any host), the same videos play fine.
-      //   3. Also verify each video is Public on YouTube and embedding is
-      //      allowed (YouTube Studio → Content → Video → Embedding → Allow).
-      //      Private/age-restricted videos show 153 too.
-      // The referrerpolicy attribute below is what YouTube's own embed code
-      // includes — it tells the browser "send the page address as Referer" so
-      // YouTube accepts the player. Keep it.
-
-      // Extra URL options you could append (after ?autoplay=1, with &):
-      //   &rel=0             don't show related videos when a video ends
-      //   &playsinline=1     keep playback inside the page on phones (no fullscreen takeover)
-      //   &start=30          start the video at 30 seconds
       frame.innerHTML =
         '<iframe src="https://www.youtube.com/embed/' + videoId +
         '?autoplay=1&rel=0&playsinline=1" title="YouTube video" ' +
@@ -216,7 +142,7 @@
 
     function closeModal() {
       modal.hidden = true;
-      frame.innerHTML = ""; // stops playback
+      frame.innerHTML = "";
       document.body.style.overflow = "";
     }
 
@@ -233,9 +159,6 @@
     });
   }
 
-  /* -------------------------------------------------------
-     5. Courses — render cards from COURSES, open a detail modal
-     ------------------------------------------------------- */
   function isImagePath(icon) {
     return /\.(png|jpe?g|svg|webp|gif)$/i.test(icon || "");
   }
@@ -321,17 +244,11 @@
     });
   }
 
-  /* -------------------------------------------------------
-     6. Misc: footer year
-     ------------------------------------------------------- */
   function setupYear() {
     var el = document.getElementById("year");
     if (el) el.textContent = new Date().getFullYear();
   }
 
-  /* -------------------------------------------------------
-     Init
-     ------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
     wireWhatsAppButtons();
     setupNav();

@@ -507,6 +507,23 @@ p{ margin: 0 0 1em; }
 }
 .footer-brand{ display:flex; flex-direction:column; gap:10px; }
 .footer-brand p{ color: var(--text-dim); font-size: 0.92rem; margin:0; }
+.footer-credit{
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  background: var(--amber);
+  color: #201400;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: transform 0.15s var(--ease), background 0.15s;
+}
+.footer-credit:hover{
+  background: var(--amber-deep);
+  transform: translateY(-1px);
+}
 .footer-links, .footer-contact{ display:flex; flex-direction:column; gap: 12px; }
 .footer-links h4, .footer-contact h4{
   font-family: var(--font-body); font-size: 0.85rem; text-transform: none;
