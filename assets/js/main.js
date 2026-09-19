@@ -289,7 +289,6 @@
       nameEl.textContent = course.name || "Untitled course";
 
       fieldsEl.innerHTML =
-        fieldRow("Duration", course.duration) +
         fieldRow("About this course", course.description);
 
       enrolBtn.setAttribute("href", course.formLink || "#");
